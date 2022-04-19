@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %}Select Grocery items  {% endblock %}</h1>
+
+<form action="/select" method="POST">
+  <label for="item">Choose an item:</label>
+  <select name="item" id="item">
+    <option value="Rice">Rice</option>
+    <option value="Sugar">Sugar</option>
+    <option value="Bread">Bread</option>  
+  </select>
+  <p>Choose a range:</p>
+  <input type="radio"  name="range" value="Min">
+  <label for="age1">Min</label><br>
+  <input type="radio" name="range" value="Max">
+  <label for="age2">Max</label><br> 
+  
+  <input type="submit" value="Submit">  
+</form>
+
+
+{% endblock %}
