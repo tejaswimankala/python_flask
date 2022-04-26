@@ -1,13 +1,13 @@
-pipeline{
-
-	agent any
-
-	    parameters{
+pipeline {
+    agent any
+     
+    }
+    
+    parameters{
         string(name:'imageName_fromBuild', defaultValue: '', description:'Build source')
     }
 
-	stages {
-
+    stages {
         stage('Initialize'){
             steps{
                 script{
@@ -16,7 +16,8 @@ pipeline{
                     echo "Running ${env.BUILD_ID} job on ${env.JENKINS_URL}"
                 }
             }
-    stage('Pull image from Hub'){
+        }
+        stage('Pull image from Hub'){
             steps{
                 echo "${params.imageName_fromBuild}"
                 sh("docker pull ${params.imageName_fromBuild}")
@@ -28,9 +29,8 @@ pipeline{
             }
         }
     } 
- 
 }
 
 def runApp(){
-    sh 'docker run -d -p 8083:5000 ${params.imageName_fromBuild}'
+    sh("docker run -d -p 8083:5000 ${params.imageName_fromBuild}")
 }
