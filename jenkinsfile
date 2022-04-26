@@ -3,7 +3,7 @@ pipeline{
 	agent any
 
 	environment {
-		DOCKERHUB_CREDENTIALS=credentials('mtejaswi12')
+		DOCKERHUB_CREDENTIALS=credentials('mtejaswi12') 
 	}
 
 	stages {
@@ -20,7 +20,7 @@ pipeline{
 		stage('Build') {
 
 			steps {
-				sh 'docker build -t mtejaswi12/groceriesblog:latest .'
+				sh 'docker build -t mtejaswi12/groceriesblog:v$BUILD_ID.0 .'
 			}
 		}
 
@@ -34,7 +34,7 @@ pipeline{
 		stage('Push') {
 
 			steps {
-				sh 'docker push mtejaswi12/groceriesblog:latest'
+				sh 'docker push mtejaswi12/groceriesblog:v$BUILD_ID.0' 
 			}
 		}
 	}
