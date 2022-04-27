@@ -1,7 +1,13 @@
 pipeline {
-    agent any
-     
+    agent any{
+        
     }
+
+    
+
+    
+     
+    
     
     parameters{
         string(name:'imageName_fromBuild', defaultValue: '', description:'Build source')
@@ -30,7 +36,7 @@ pipeline {
         }
     } 
 
-
+}
 def runApp(){
     sh("docker run -d -p 8083:5000 ${params.imageName_fromBuild}")
 }
