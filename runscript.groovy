@@ -1,14 +1,6 @@
 pipeline {
-    agent any{
-        
-    }
+    agent any
 
-    
-
-    
-     
-    
-    
     parameters{
         string(name:'imageName_fromBuild', defaultValue: '', description:'Build source')
     }
