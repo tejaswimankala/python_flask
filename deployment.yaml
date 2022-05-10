@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: groceries
+  labels:
+    app: groceries
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: groceries
+  template:
+    metadata:
+      labels:
+        app: groceries
+    spec:
+      containers:
+      - name: groceries
+        image: mtejaswi12/groceriesblog:v13.0
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: groceries
+spec:
+  type: LoadBalancer
+  selector:
+    app: groceries
+  ports:
+  - port: 5000
+    targetPort: 5000
+    
