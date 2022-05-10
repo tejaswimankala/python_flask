@@ -4,61 +4,26 @@ pipeline{
 
 	environment {
 		DOCKERHUB_CREDENTIALS=credentials('mtejaswi12')
-		IMAGE_NAME="mtejaswi12/groceriesblog" 
+		IMAGE_NAME="mtejaswi12/groceriesblog"
+		PROJECT_ID = 'future-silicon-342405'
+
+        CLUSTER_NAME = 'demo-cluster'
+
+        LOCATION = 'us-central1-a'
+
+        CREDENTIALS_ID = 'future-silicon-342405'
+		
 	}
 
 	stages {
-
-        stage('Initialize'){
-            steps{
-                script{
-                    def dockerHome = tool 'docker'
-                    env.PATH = "${dockerHome}/bin:${env.PATH}"
-                    echo "Running ${env.BUILD_ID} job on ${env.JENKINS_URL}"
-                }
-            }
-        }
-		stage('Build') {
-
-			steps {
-				sh 'docker build -t $IMAGE_NAME:v$BUILD_ID.0 .'
-			}
-		}
-
-		stage('Login') {
-
-			steps {
-				sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $(echo $DOCKERHUB_CREDENTIALS_PSW )'
-			}
-		}
-
-		stage('Push') {
-
-			steps {
-				sh 'docker push $IMAGE_NAME:v$BUILD_ID.0' 
-			}
-		}
-		stage('trigger runApp build'){
-            steps{
-                script{
-                    build job: 'runApp',
-                    parameters:[
-                        [ $class: 'StringParameterValue', name:'imageName_fromBuild', value:"${env.IMAGE_NAME}:v${env.BUILD_ID}.0"]
-                    ]
-                }
-            }
-        }
+		stage ('build pods'){
+		 steps
+		
+		 {
+		 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+		 }
 	}
+ }
  
+ }
 
-	post {
-		always {
-			sh 'docker logout'
-		}
-	}
-
-}
-
-def runApp(){
-    sh('docker run -d -p 8083:5000 $IMAGE_NAME:v$BUILD_ID.0')
-}
