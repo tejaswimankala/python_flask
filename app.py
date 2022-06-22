@@ -1,10 +1,6 @@
 import sqlite3
 sqlite3.connect(":memory:")
 from flask import Flask, render_template, request
-#from redis import Redis
-
-
-
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
@@ -12,8 +8,6 @@ def get_db_connection():
     return conn
 
 app = Flask(__name__)
-#redis = Redis(host='redis', port=6379)
-
 
 
 @app.route('/')
